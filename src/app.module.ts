@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TelegrafModule } from 'nestjs-telegraf';
-import { TelegramUpdate } from './telegram/telegram.update';
 import { sessionMiddleware } from './telegram/middlewares/session.middleware';
+import { TelegramModule } from './telegram/telegram.module';
 
 @Module({
   imports: [
@@ -14,10 +14,11 @@ import { sessionMiddleware } from './telegram/middlewares/session.middleware';
         token: configService.get('TG_TOKEN'),
         middlewares: [
           sessionMiddleware
-        ]
+        ],
+        include: [TelegramModule]
       })
     }),
-    TelegramUpdate
+    TelegramModule
   ]
 })
 export class AppModule {
