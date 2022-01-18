@@ -7,13 +7,14 @@ import { helloKeyboard } from '../keyboards/hello.keyboard';
 export class HelloScene {
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: Context) {
-    await ctx.telegram.sendMessage(ctx.chat.id, 'Приветствие...', {
+    console.log(`${ctx.from.username}: onSceneEnter`);
+    await ctx.telegram.sendMessage(ctx.chat.id, '123', {
       reply_markup: helloKeyboard
     });
   }
 
   @On('contact')
   authorization(@Ctx() ctx: Context) {
-    return JSON.stringify(ctx.message)
+    return JSON.stringify(ctx.message);
   }
 }

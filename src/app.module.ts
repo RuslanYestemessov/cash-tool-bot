@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { sessionMiddleware } from './telegram/middlewares/session.middleware';
 import { TelegramModule } from './telegram/telegram.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -14,8 +15,17 @@ import { TelegramModule } from './telegram/telegram.module';
         token: configService.get('TG_TOKEN'),
         middlewares: [
           sessionMiddleware
-        ],
-        include: [TelegramModule]
+        ]
+      })
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get('MONGO_DB'),
+        dbName: configService.get('DB_NAME'),
+        w: 'majority',
+        retryWrites: true
       })
     }),
     TelegramModule
