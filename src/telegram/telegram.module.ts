@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TelegramUpdate } from './telegram.update';
-import { HelloScene } from './scenes/hello.scene';
+import { LoginScene } from './scenes/login.scene';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
+import { AuthorizationService } from './services/authotization.service';
+import { TransactionSelectScene } from './scenes/transaction-select.scene';
 
 @Module({
   imports: [
@@ -10,7 +12,7 @@ import { User, UserSchema } from './schemas/user.schema';
       { name: User.name, schema: UserSchema }
     ])
   ],
-  providers: [TelegramUpdate, HelloScene]
+  providers: [TelegramUpdate, LoginScene, AuthorizationService, TransactionSelectScene]
 })
 export class TelegramModule {
 }
