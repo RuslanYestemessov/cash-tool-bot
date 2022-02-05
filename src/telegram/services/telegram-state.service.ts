@@ -3,8 +3,8 @@ import { TransactionEnum } from '../enums/transaction.enum';
 
 @Injectable()
 export class TelegramStateService {
-  currentUserId: string;
-  currentOperation: TransactionEnum;
+  private currentUserId: string;
+  private currentOperation: TransactionEnum;
 
   setCurrentUser(userId: string) {
     this.currentUserId = userId;

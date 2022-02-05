@@ -8,7 +8,7 @@ import { TransactionSelectScene } from './scenes/transaction-select.scene';
 import { TransactionAddScene } from './scenes/transaction-add.scene';
 import { Transaction, TransactionSchema } from './schemas/transaction.schema';
 import { TelegramStateService } from './services/telegram-state.service';
-import { AddTransactionService } from './services/add-transaction.service';
+import { TransactionService } from './services/transaction.service';
 
 const scenes = [
   LoginScene,
@@ -20,7 +20,7 @@ const services = [
   TelegramUpdate,
   AuthorizationService,
   TelegramStateService,
-  AddTransactionService
+  TransactionService
 ];
 
 @Module({

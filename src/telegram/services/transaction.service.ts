@@ -2,19 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Transaction, TransactionDocument } from '../schemas/transaction.schema';
 import { Model } from 'mongoose';
-import { TelegramStateService } from './telegram-state.service';
 import { TransactionEnum } from '../enums/transaction.enum';
 
 @Injectable()
-export class AddTransactionService {
-  currentUserId: string;
+export class TransactionService {
 
   constructor(
     @InjectModel(Transaction.name)
     private readonly transactionModel: Model<TransactionDocument>,
-    private userStateService: TelegramStateService
   ) {
-    this.currentUserId = this.userStateService.getCurrentUser;
   }
 
   async addTransaction(transaction: number, userId: string, transactionType: TransactionEnum) {
@@ -22,6 +18,12 @@ export class AddTransactionService {
       transaction,
       transactionType,
       userId
+    });
+  }
+
+  async showAllTransactions(userId: string) {
+    return this.transactionModel.find({
+      userId: userId
     });
   }
 }

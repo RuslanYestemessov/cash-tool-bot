@@ -1,13 +1,13 @@
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 import { TRANSACTION_ADD_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/scenes.constants';
 import { Context } from '../interfaces/context.interface';
-import { AddTransactionService } from '../services/add-transaction.service';
+import { TransactionService } from '../services/transaction.service';
 import { TelegramStateService } from '../services/telegram-state.service';
 
 @Scene(TRANSACTION_ADD_SCENE)
 export class TransactionAddScene {
   constructor(
-    private readonly addTransactionService: AddTransactionService,
+    private readonly addTransactionService: TransactionService,
     private telegramStateService: TelegramStateService
   ) {
   }
