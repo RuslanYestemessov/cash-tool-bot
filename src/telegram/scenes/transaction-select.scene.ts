@@ -3,14 +3,14 @@ import { TRANSACTION_ADD_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/sc
 import { Context } from '../interfaces/context.interface';
 import { transactionSelectKeyboard } from '../keyboards/transaction-select.keyboard';
 import { TransactionEnum } from '../enums/transaction.enum';
-import { TelegramStateService } from '../services/telegram-state.service';
 import { TransactionService } from '../services/transaction.service';
+import { UserService } from '../services/user.service';
 
 @Scene(TRANSACTION_SELECT_SCENE)
 export class TransactionSelectScene {
   constructor(
-    private telegramStateService: TelegramStateService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private userService: UserService
   ) {
   }
 
@@ -26,18 +26,21 @@ export class TransactionSelectScene {
     // @ts-ignore
     const text = ctx.message.text;
     if (text === TransactionEnum.TRANSACTION_INCOME || text === TransactionEnum.TRANSACTION_OUTCOME) {
-      this.telegramStateService.setCurrentOperation(text);
-      await ctx.scene.enter(TRANSACTION_ADD_SCENE);
+      await ctx.scene.enter(TRANSACTION_ADD_SCENE, {
+        transactionType: text
+      });
     } else if (text === TransactionEnum.TRANSACTIONS_SHOW) {
-      const transactions = await this.transactionService.showAllTransactions(this.telegramStateService.getCurrentUser);
-      const response = [];
-      for (const transaction of transactions) {
-        response.push({
-          transactionType: (await transaction).transactionType,
-          transaction: (await transaction).transaction
-        });
+      const { _id } = await this.userService.findOne(ctx.from.username);
+      const dbTransactions = await this.transactionService.showAllTransactions(_id);
+      let totalCash = 0;
+      for (const transaction of dbTransactions) {
+        if (transaction.transactionType === TransactionEnum.TRANSACTION_INCOME) {
+          totalCash += transaction.transaction;
+        } else if (transaction.transactionType === TransactionEnum.TRANSACTION_OUTCOME) {
+          totalCash -= transaction.transaction;
+        }
       }
-      return JSON.stringify(response);
+      return `Ваш текущий баланс: ${totalCash}`;
     } else {
       await this.sceneEnter(ctx);
     }
