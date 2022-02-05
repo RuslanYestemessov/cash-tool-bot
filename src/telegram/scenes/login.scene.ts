@@ -4,10 +4,14 @@ import { Context } from '../interfaces/context.interface';
 import { helloKeyboard } from '../keyboards/hello.keyboard';
 import { AUTH_COMPLETED, HELLO_MESSAGE, LOGIN_SCENE_ON_MSG } from '../constants/messages.constants';
 import { AuthorizationService } from '../services/authotization.service';
+import { TelegramStateService } from '../services/telegram-state.service';
 
 @Scene(LOGIN_SCENE)
 export class LoginScene {
-  constructor(private readonly authorizationService: AuthorizationService) {
+  constructor(
+    private readonly authorizationService: AuthorizationService,
+    private telegramStateService: TelegramStateService
+  ) {
   }
 
   @SceneEnter()
@@ -20,14 +24,14 @@ export class LoginScene {
 
   @On('contact')
   async authorization(@Ctx() ctx: Context) {
-    const user = await this.authorizationService.findOne(ctx.from.username);
-    if (!user) {
-      await this.authorizationService.create({
-        userName: ctx.from.username,
-        // @ts-ignore
-        phone: ctx.message.contact.phone_number
-      });
+    let currentUser = await this.authorizationService.findOne(ctx.from.username);
+    const userName = ctx.from.username;
+    // @ts-ignore
+    const phone = ctx.message.contact.phone_number;
+    if (!currentUser) {
+      currentUser = await this.authorizationService.create({ userName, phone });
     }
+    this.telegramStateService.setCurrentUser(currentUser.id);
     ctx.telegram.sendMessage(ctx.chat.id, AUTH_COMPLETED);
     ctx.scene.enter(TRANSACTION_SELECT_SCENE);
   }
