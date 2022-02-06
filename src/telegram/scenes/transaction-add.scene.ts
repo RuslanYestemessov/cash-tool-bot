@@ -32,8 +32,14 @@ export class TransactionAddScene {
       const { _id } = await this.userService.findOne(ctx.from.username);
       // @ts-ignore
       const transactionType = ctx.scene.state.transactionType;
-      await this.addTransactionService.addTransaction(Number(massage), _id, transactionType);
-      return 'Transaction added successfully';
+      await this.addTransactionService.addTransaction(Number(massage), _id, transactionType, ctx.message.message_id);
+      ctx.telegram.sendMessage(ctx.from.id, `${transactionType} на сумму: ${massage} был успешно добавлен`, {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: 'Удалить транзакцию', callback_data: String(ctx.message.message_id) }]
+          ]
+        }
+      });
     } else if (massage === 'Назад') {
       await ctx.scene.enter(TRANSACTION_SELECT_SCENE);
     } else {

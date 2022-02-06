@@ -7,6 +7,9 @@ export type TransactionDocument = Transaction & Document
 @Schema()
 export class Transaction {
   @Prop()
+  messageId: number;
+
+  @Prop()
   userId: string;
 
   @Prop()

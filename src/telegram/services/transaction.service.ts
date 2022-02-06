@@ -13,11 +13,17 @@ export class TransactionService {
   ) {
   }
 
-  async addTransaction(transaction: number, userId: string, transactionType: TransactionEnum) {
+  async addTransaction(
+    transaction: number,
+    userId: string,
+    transactionType: TransactionEnum,
+    messageId: number
+  ) {
     await this.transactionModel.create({
       transaction,
       transactionType,
-      userId
+      userId,
+      messageId
     });
   }
 
@@ -25,5 +31,11 @@ export class TransactionService {
     return this.transactionModel.find({
       userId: userId
     });
+  }
+
+  async removeTransaction(messageId: number) {
+    return this.transactionModel.findOneAndDelete({
+      messageId
+    })
   }
 }
