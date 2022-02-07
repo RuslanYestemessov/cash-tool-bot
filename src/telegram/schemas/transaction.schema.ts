@@ -17,6 +17,9 @@ export class Transaction {
 
   @Prop()
   transaction: number;
+
+  @Prop()
+  comment: string
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

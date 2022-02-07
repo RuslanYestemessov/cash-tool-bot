@@ -31,7 +31,7 @@ export class TransactionSelectScene {
       });
     } else if (text === TransactionEnum.TRANSACTIONS_SHOW) {
       const { _id } = await this.userService.findOne(ctx.from.username);
-      const dbTransactions = await this.transactionService.showAllTransactions(_id);
+      const dbTransactions = await this.transactionService.getAllTransactions(_id);
       let totalCash = 0;
       for (const transaction of dbTransactions) {
         if (transaction.transactionType === TransactionEnum.TRANSACTION_INCOME) {

@@ -8,11 +8,13 @@ import { TransactionAddScene } from './scenes/transaction-add.scene';
 import { Transaction, TransactionSchema } from './schemas/transaction.schema';
 import { TransactionService } from './services/transaction.service';
 import { UserService } from './services/user.service';
+import { CommentAddScene } from './scenes/comment-add.scene';
 
 const scenes = [
   LoginScene,
   TransactionSelectScene,
-  TransactionAddScene
+  TransactionAddScene,
+  CommentAddScene
 ];
 
 const services = [

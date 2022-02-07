@@ -9,7 +9,7 @@ export class TransactionService {
 
   constructor(
     @InjectModel(Transaction.name)
-    private readonly transactionModel: Model<TransactionDocument>,
+    private readonly transactionModel: Model<TransactionDocument>
   ) {
   }
 
@@ -23,19 +23,30 @@ export class TransactionService {
       transaction,
       transactionType,
       userId,
-      messageId
+      messageId,
+      comment: ''
     });
   }
 
-  async showAllTransactions(userId: string) {
+  async getAllTransactions(userId: string) {
     return this.transactionModel.find({
       userId: userId
     });
   }
 
-  async removeTransaction(messageId: number) {
+  async getOneTransaction(messageId: string): Promise<Transaction> {
+    return this.transactionModel.findOne({
+      messageId
+    });
+  }
+
+  async addCommentForTransaction(messageId: string, transaction: Transaction) {
+    return this.transactionModel.findOneAndUpdate({ messageId }, transaction).exec();
+  }
+
+  async removeTransaction(messageId: string) {
     return this.transactionModel.findOneAndDelete({
       messageId
-    })
+    });
   }
 }

@@ -3,11 +3,12 @@ import { TRANSACTION_ADD_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/sc
 import { Context } from '../interfaces/context.interface';
 import { TransactionService } from '../services/transaction.service';
 import { UserService } from '../services/user.service';
+import { TransactionActionsEnum } from '../enums/transaction-actions.enum';
 
 @Scene(TRANSACTION_ADD_SCENE)
 export class TransactionAddScene {
   constructor(
-    private readonly addTransactionService: TransactionService,
+    private readonly transactionService: TransactionService,
     private readonly userService: UserService
   ) {
   }
@@ -32,11 +33,14 @@ export class TransactionAddScene {
       const { _id } = await this.userService.findOne(ctx.from.username);
       // @ts-ignore
       const transactionType = ctx.scene.state.transactionType;
-      await this.addTransactionService.addTransaction(Number(massage), _id, transactionType, ctx.message.message_id);
+      await this.transactionService.addTransaction(Number(massage), _id, transactionType, ctx.message.message_id);
       ctx.telegram.sendMessage(ctx.from.id, `${transactionType} на сумму: ${massage} был успешно добавлен`, {
         reply_markup: {
           inline_keyboard: [
-            [{ text: 'Удалить транзакцию', callback_data: String(ctx.message.message_id) }]
+            [
+              { text: 'Удалить транзакцию', callback_data: `${ctx.message.message_id}_${TransactionActionsEnum.DELETE_TRANSACTION}` },
+              { text: 'Добавить комментарий', callback_data: `${ctx.message.message_id}_${TransactionActionsEnum.ADD_COMMENT}` }
+            ]
           ]
         }
       });
