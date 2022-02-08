@@ -1,8 +1,8 @@
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
-import { LOGIN_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/scenes.constants';
+import { LOGIN_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/scenes';
 import { Context } from '../interfaces/context.interface';
 import { helloKeyboard } from '../keyboards/hello.keyboard';
-import { AUTH_COMPLETED, HELLO_MESSAGE, LOGIN_SCENE_ON_MSG } from '../constants/messages.constants';
+import { AUTH_COMPLETED, HELLO_MESSAGE, LOGIN_SCENE_ON_MSG } from '../constants/messages';
 import { UserService } from '../services/user.service';
 
 @Scene(LOGIN_SCENE)

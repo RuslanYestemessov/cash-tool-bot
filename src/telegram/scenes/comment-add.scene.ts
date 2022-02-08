@@ -1,7 +1,8 @@
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
-import { COMMENT_ADD_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/scenes.constants';
+import { COMMENT_ADD_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/scenes';
 import { Context } from '../interfaces/context.interface';
 import { TransactionService } from '../services/transaction.service';
+import { BACK_BUTTON } from '../constants/buttons';
 
 @Scene(COMMENT_ADD_SCENE)
 export class CommentAddScene {
@@ -14,7 +15,7 @@ export class CommentAddScene {
       reply_markup: {
         resize_keyboard: true,
         keyboard: [
-          [{ text: 'Назад' }]
+          [{ text: BACK_BUTTON }]
         ]
       }
     });
@@ -25,7 +26,7 @@ export class CommentAddScene {
     // @ts-ignore
     const comment = ctx.message.text;
     const { messageId } = ctx.scene.state as any;
-    if (comment === 'Назад') {
+    if (comment === BACK_BUTTON) {
       await ctx.scene.enter(TRANSACTION_SELECT_SCENE);
     } else {
       const transaction = await this.transactionService.getOneTransaction(messageId);

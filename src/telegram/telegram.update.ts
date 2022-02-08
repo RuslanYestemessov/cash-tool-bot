@@ -1,7 +1,7 @@
 import { Ctx, On, Start, Update } from 'nestjs-telegraf';
 import { Context } from './interfaces/context.interface';
-import { COMMENT_ADD_SCENE, LOGIN_SCENE } from './constants/scenes.constants';
-import { START_COMMAND_ERROR } from './constants/messages.constants';
+import { COMMENT_ADD_SCENE, LOGIN_SCENE } from './constants/scenes';
+import { START_COMMAND_ERROR } from './constants/messages';
 import { TransactionService } from './services/transaction.service';
 import { TransactionActionsEnum } from './enums/transaction-actions.enum';
 

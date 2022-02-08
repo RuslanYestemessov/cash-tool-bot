@@ -1,5 +1,5 @@
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
-import { TRANSACTION_ADD_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/scenes.constants';
+import { TRANSACTION_ADD_SCENE, TRANSACTION_SELECT_SCENE } from '../constants/scenes';
 import { Context } from '../interfaces/context.interface';
 import { transactionSelectKeyboard } from '../keyboards/transaction-select.keyboard';
 import { TransactionEnum } from '../enums/transaction.enum';
